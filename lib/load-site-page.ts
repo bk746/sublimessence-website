@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import { unstable_noStore as noStore } from "next/cache";
 import type { Metadata } from "next";
 
 const CONTENT_DIR = path.join(
@@ -52,6 +53,7 @@ function resolveHtmlPath(key: SitePageKey): string {
 }
 
 export function loadSitePage(key: SitePageKey) {
+  noStore();
   const raw = fs.readFileSync(resolveHtmlPath(key), "utf8");
 
   const bodyClass =

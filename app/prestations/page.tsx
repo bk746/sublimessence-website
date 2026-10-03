@@ -1,11 +1,12 @@
 import { SitePage } from "@/components/SitePage";
 import { loadSitePage, siteMetadataFromLoaded } from "@/lib/load-site-page";
 
-const page = loadSitePage("prestations");
-
-export const metadata = siteMetadataFromLoaded(page.metadata);
+export function generateMetadata() {
+  return siteMetadataFromLoaded(loadSitePage("prestations").metadata);
+}
 
 export default function PrestationsPage() {
+  const page = loadSitePage("prestations");
   return (
     <SitePage
       bodyClass={page.bodyClass}

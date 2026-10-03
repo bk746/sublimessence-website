@@ -1290,17 +1290,16 @@ h2.d{letter-spacing:-.022em}
 .itl-media img{filter:saturate(.86) brightness(.92)}
 @media (max-width:640px){.itl-veil{background:linear-gradient(0deg,rgba(22,16,11,.92) 0%,rgba(22,16,11,.7) 50%,rgba(22,16,11,.3) 100%)}}
 .itl-cta{text-decoration:none}
-/* Hero : fond d'ornements gravés (entrées de serrure, cartouches, rocailles, rinceaux) */
-.h4-orn{position:absolute;inset:-48px;z-index:-3;pointer-events:none;background:url(img/hero-ornements.svg) -60px -40px/1260px auto repeat;opacity:.1;
-  transform:translate3d(var(--omx,0px),calc(var(--oy,0px) + var(--omy,0px)),0);transition:transform 1.2s var(--ease-o);will-change:transform;
-  -webkit-mask-image:radial-gradient(ellipse 27% 34% at 25% 52%,rgba(0,0,0,.16) 20%,#000 92%),radial-gradient(ellipse 25% 34% at 72% 48%,rgba(0,0,0,.3) 30%,#000 100%);
-  -webkit-mask-composite:source-in;mask-image:radial-gradient(ellipse 27% 34% at 25% 52%,rgba(0,0,0,.16) 20%,#000 92%),radial-gradient(ellipse 25% 34% at 72% 48%,rgba(0,0,0,.3) 30%,#000 100%);mask-composite:intersect}
+/* hero : damas ton sur ton + toile de lin */
+.h4-orn{position:absolute;inset:0;z-index:-3;pointer-events:none;background:url(/img/hero-damas.svg) -40px -20px/300px auto repeat;opacity:.055;
+  -webkit-mask-image:radial-gradient(ellipse 27% 34% at 25% 52%,rgba(0,0,0,.25) 20%,#000 95%),radial-gradient(ellipse 25% 34% at 72% 48%,rgba(0,0,0,.35) 30%,#000 95%);
+  -webkit-mask-composite:source-in;mask-image:radial-gradient(ellipse 27% 34% at 25% 52%,rgba(0,0,0,.25) 20%,#000 95%),radial-gradient(ellipse 25% 34% at 72% 48%,rgba(0,0,0,.35) 30%,#000 95%);mask-composite:intersect}
+.h4-lin{position:absolute;inset:0;z-index:-3;pointer-events:none;background:url(/img/hero-lin.png) 0 0/160px 160px repeat;mix-blend-mode:multiply;opacity:.38}
 @media (max-width:980px){
-  .h4-orn{background-size:760px auto;opacity:.11;
-    -webkit-mask-image:radial-gradient(ellipse 58% 20% at 40% 30%,rgba(0,0,0,.22) 25%,#000 100%),radial-gradient(ellipse 55% 16% at 50% 82%,rgba(0,0,0,.4) 30%,#000 100%);
-    mask-image:radial-gradient(ellipse 58% 20% at 40% 30%,rgba(0,0,0,.22) 25%,#000 100%),radial-gradient(ellipse 55% 16% at 50% 82%,rgba(0,0,0,.4) 30%,#000 100%)}
+  .h4-orn{background-size:210px auto;opacity:.06;
+    -webkit-mask-image:radial-gradient(ellipse 58% 20% at 40% 30%,rgba(0,0,0,.3) 25%,#000 95%),radial-gradient(ellipse 55% 16% at 50% 82%,rgba(0,0,0,.45) 30%,#000 95%);
+    mask-image:radial-gradient(ellipse 58% 20% at 40% 30%,rgba(0,0,0,.3) 25%,#000 95%),radial-gradient(ellipse 55% 16% at 50% 82%,rgba(0,0,0,.45) 30%,#000 95%)}
 }
-@media (prefers-reduced-motion:reduce){.h4-orn{transform:none;transition:none}}
 
 /* =========================================================
    Pages intérieures (prestations, réalisations, atelier, contact)

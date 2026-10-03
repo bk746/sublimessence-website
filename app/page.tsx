@@ -1,11 +1,8 @@
 import { SitePage } from "@/components/SitePage";
 import { loadSitePage, siteMetadataFromLoaded } from "@/lib/load-site-page";
 
-const page = loadSitePage("index");
-
-export const metadata = siteMetadataFromLoaded(page.metadata);
-
 export default function Home() {
+  const page = loadSitePage("index");
   return (
     <SitePage
       bodyClass={page.bodyClass}
@@ -13,4 +10,8 @@ export default function Home() {
       jsonLdBlocks={page.metadata.jsonLdBlocks}
     />
   );
+}
+
+export function generateMetadata() {
+  return siteMetadataFromLoaded(loadSitePage("index").metadata);
 }
