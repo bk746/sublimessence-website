@@ -1,0 +1,111 @@
+ATELIER SUBLIMESSENCE — Peintre sur mobilier, Epagny Metz-Tessy / Annecy (refonte AKNO, maquette V3 « atelier sensible » : pinceau vivant, récit au scroll)
+=====================================================================================================
+DONNÉES RÉELLES (reprises du site atelier-sublimessence.com, oct. 2026) :
+nom, Nathalie Herisson (directrice de publication), prestations, techniques, parcours (Atelier Garance,
+qualité Artisan d'art CMA Haute-Savoie 01/10/2024, annuaire Institut pour les Savoir-Faire Français,
+Biennale des Peintres sur Mobilier 2024), démarche éco (pigments naturels FR, A+ Ecolabel, tri),
+partenaires tapissiers / ébénistes, diagnostic à domicile + projet décoratif + devis offerts,
+adresse 178 Route de Proméry 74370 Epagny Metz-Tessy, 06 73 02 73 08, ateliersublimessence@gmail.com,
+horaires lun–ven 8h–18h sur RDV, Instagram / Facebook.
+
+DONNÉES D'EXEMPLE (signalées « exemple » sur la page, à valider / remplacer) :
+prix « dès … », fourchettes et délais du diagnostic, délai FAQ, 3 avis clients, « le plus fréquent »,
+liste des communes (rayon à confirmer), SIRET [à compléter], hébergeur [à confirmer], endpoint formulaire.
+
+PHOTOS ORIGINALES — © Nathalie Herisson (téléchargées depuis le site actuel)
+Recadrées, certaines agrandies (Real-ESRGAN x4 puis réduites x2), étalonnage commun
+(noirs relevés, légère courbe en S, +chaleur, saturation 0,9 ; portraits en N&B chaud).
+img/secretaire-apres.jpg, -avant.jpg, -serrure.jpg, -noyer.jpg  (planches 2025/09 « avant / après », texte « APRES » retiré)
+img/mado-avant/apres.jpg, lumiere-, coiffeuse-, chevet-, tablebasse-, gigognes- avant/apres.jpg (découpe des diptyques)
+img/faux-cuir, fausse-rouille, faux-beton, fluid-art, teinte-chene, decor-geometrique, decor-classique,
+    arte-povera, gris-colores, patine-chiffon, resto-sculpture, resto-pied, resto-angle, quincaillerie.jpg
+img/moodboard-gigognes.jpg, moodboard-bar.jpg (planches d'ambiance réelles)
+img/nathalie.jpg, nathalie-atelier.jpg (portraits), diplome-artisan-art.jpg (titre CMA)
+
+PHOTOS DE BANQUE (licence Pexels : usage commercial gratuit, attribution non obligatoire)
+img/stock-annecy.jpg    Pexels 16156542 — Hugo Magalhaes   https://www.pexels.com/photo/16156542/   (section Contact & zone)
+img/stock-pigments.jpg  Pexels 32444178 — Anaïs Berland    https://www.pexels.com/photo/32444178/   (section L'atelier)
+Les deux sont légendées « photo d'illustration » sur la page.
+
+TYPOGRAPHIES (SIL Open Font License 1.1, fichiers locaux dans fonts/)
+- Fraunces (Undercase Type) : titres — serif à fort caractère, graisses 500–560
+- Schibsted Grotesk (Schibsted / Bakken & Bæck) : texte
+- DM Mono (Colophon) : étiquettes « nuancier », n° de teinte
+
+PALETTE (identique à la V2) (tirée du métier : apprêt, pigments et bois de l'atelier)
+- Crème de gesso   #F3EDE2  fond dominant (apprêt gesso à la colle de peau)
+- Ivoire           #FAF6EE  cartes, formulaires, passe-partout
+- Gesso poncé      #EAE2D4  sections d'appui (diagnostic, méthode, prix, FAQ)
+- Brou de noix     #221B16  texte (14,6:1 sur crème) et pied de page ; lavé #5E5248 (6,5:1)
+- Terre de Sienne brûlée #A6431E  couleur d'action unique (texte ivoire 5,7:1), survol #8E3818
+- Terre verte      #2E3626  pigment profond : nuancier, fiche du diagnostic, contact (ivoire 11,7:1)
+- Ocre jaune       #C9A35C  détails sur fond sombre uniquement (5,3:1 sur terre verte)
+
+NOUVEAUTÉS V3 — visuels générés (aucune image IA)
+- HERO (photo d'illustration, ce n'est PAS une pièce de l'atelier — légendée « photo d'illustration » sur la page) :
+  Commode, Denis Genty (maître ébéniste, actif 1754–v. 1762), vers 1760 — chêne plaqué d'amarante, bois satiné, buis ; bronzes dorés ; marbre rouge royal.
+  The Metropolitan Museum of Art, New York — Bequest of Ruth Mabee Lachman, 1990 (inv. 1990.268.1a, b · objet 207877).
+  Source : https://www.metmuseum.org/art/collection/search/207877
+  Fichier original 4000 × 3194 px : https://images.metmuseum.org/CRDImages/es/original/DP108712.jpg
+  Licence : Open Access, domaine public CC0 1.0 (usage commercial libre, attribution non obligatoire mais faite ici).
+  Photographe : service photographique du Metropolitan Museum of Art (non nommé individuellement).
+  - img/hero-piece.webp  : détourage IA (rembg / BiRefNet) + affinage alpha (érosion 1 px, adoucissement 0,7 px,
+                           démélange des couleurs de fond = aucun liseré), 1800 × 1800 px, transparent
+  - img/hero-dessin.webp : « dessin d'atelier » au crayon sur gesso calculé depuis la même image (XDoG + hachures),
+                           aligné au pixel près, contenu à l'intérieur de la silhouette (aucun contour qui dépasse)
+  Anciennes versions (secrétaire de Nathalie, basse définition) archivées hors livrable.
+- img/mado-dessin.webp  : dessin du projet décoratif du buffet Mado (étape II du récit)
+- img/tache-ocre/-sienne/-verte.webp : taches de pigment aquarellées générées (procédural)
+- masque « poils de pinceau » : généré procéduralement, intégré en data-URI dans la feuille de style
+- demo.mp4 / demo.webm : capture vidéo (Playwright) du parcours desktop, ~30 s
+
+PRESTATIONS (panneaux immersifs) — photos d'illustration, The Metropolitan Museum of Art, Open Access CC0 (domaine public)
+  - img/pr-restauration.webp : Commode, Bernard II van Risenburgh (BVRB), vers 1740–45, détail du bois brut et de l'estampille.
+      Inv. 1974.356.189, The Lesley and Emma Sheafer Collection — https://www.metmuseum.org/art/collection/search/205782
+      Fichier : https://images.metmuseum.org/CRDImages/es/original/DP105702.jpg
+  - img/pr-decor.webp : Commode peinte et dorée, vers 1740–50, détail du décor peint.
+      Inv. 1974.356.97, The Lesley and Emma Sheafer Collection — https://www.metmuseum.org/art/collection/search/205727
+      Fichier : https://images.metmuseum.org/CRDImages/es/original/DP-45889-003.jpg
+  - img/pr-finitions.webp : Commode de Denis Genty (même pièce que l'accueil), détail de marqueterie et bronzes.
+      Fichier : https://images.metmuseum.org/CRDImages/es/original/DP108716.jpg
+  Photographe : service photographique du Met (non nommé). Chaque image est légendée « photo d'illustration » sur la page ;
+  les vignettes « À l'atelier » de chaque panneau sont des photos réelles de Nathalie Herisson.
+
+ACCESSIBILITÉ / MOUVEMENT
+prefers-reduced-motion : pièce déjà peinte, orbes et rubans figés, pas de défilement doux, galerie en défilement natif, révélations désactivées.
+Écrans tactiles : pas de curseur personnalisé, pinceau au toucher (tap / glisser), galerie en défilement natif avec aimantation.
+
+Fiche d atelier (diagnostic), img/fiche-commode.webp : recadrage de la meme commode Louis XV (Met Museum, CC0), photo d illustration.
+
+V4.1 — MÉTHODE ET INTERLUDE
+- img/pc/etape-1..4.webp : photos réelles © Nathalie Herisson (coiffeuse Louis XVI à l'arrivée et livrée, planche d'ambiance
+  des tables gigognes, restauration d'un panneau sculpté), recadrées au carré, étalonnage commun.
+- img/itl-marqueterie.webp / -m.webp : Table mécanique, Jean Henri Riesener, 1781, détail de la marqueterie du plateau.
+  The Metropolitan Museum of Art, The Jules Bache Collection, 1949 (inv. 49.7.117) — https://www.metmuseum.org/art/collection/search/200595
+  Fichier : https://images.metmuseum.org/CRDImages/es/original/DP105395.jpg — Open Access, domaine public CC0. Légendée « photo d'illustration ».
+- La section « L'atelier des finitions » (configurateur) a été retirée.
+
+=====================================================================================================
+SITE MULTI-PAGES (oct. 2026) : index.html (accueil) · prestations.html · realisations.html · atelier.html · contact.html
+Feuilles communes : site.css, site.js (générés par build.py depuis src/ : chrome/ en-tête + pied, pages/ contenus).
+
+PAGE RÉALISATIONS — 30 réalisations, toutes © Nathalie Herisson (site atelier-sublimessence.com : page Réalisations,
+9 fiches projet, pages Restauration / Projet décoratif / Finitions). img/real/*.webp (+ -t.webp vignettes).
+Comparateurs avant / après : img/aa/*.webp (détourage + fond d'atelier commun, déjà utilisés à l'accueil).
+Basse résolution d'origine (≤ 450 px, présentées petites, agrandies x2 par Real-ESRGAN quand indiqué) :
+  patines (chiffon, essuyée, céruse, shabby, grisé) 250×377 · gris colorés 250×377 · échantillons faux / décors /
+  peintures naturelles 449×449 (x2) · restauration 449×449 · avant coiffeuse 278×208, lumière 259×317,
+  chevet 272×343, Mado 380×521 (x2). Planches d'ambiance et après des fiches : 500 à 3179 px.
+  Doublons écartés : rest2 / Image11 (= restauration2 / restauration3), vignettes « Sans titre » (= diptyques).
+Logos : titre Artisan d'art (CMA), AFPM (Biennale), « peintre sur mobilier éco-responsable » — repris du site actuel.
+
+CARTE (contact.html) : img/carte-epagny.webp composée depuis les tuiles OpenStreetMap (zoom 13, 36 tuiles),
+teintée à la palette — © contributeurs OpenStreetMap, ODbL (attribution affichée sous la carte et dans les mentions).
+La carte interactive (iframe openstreetmap.org) ne se charge qu'au clic : aucune requête tierce avant.
+Coordonnées de l'atelier (Nominatim) : 45.94753, 6.10697.
+
+FORMULAIRE CONTACT : validation côté client (nom, tél./e-mail, message), types de projet (cases facultatives),
+jusqu'à 4 photos (10 Mo max chacune, glisser-déposer). Aucun backend : renseigner data-endpoint sur <form id="ctForm">
+(ex. Formspree) — sans endpoint, l'envoi est simulé et l'écran de succès s'affiche.
+
+Ornements du fond du hero (img/hero-ornements.svg) : dessin vectoriel original, généré pour ce site (entrées de serrure Louis XV, cartouches, rocailles, rinceaux d acanthe, fleurons). Aucune image tierce.
