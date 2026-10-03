@@ -53,15 +53,19 @@
         g.strokeStyle=gr;g.lineWidth=Wd/n*(1+Math.random()*1.6);g.beginPath();g.moveTo(x0,y);g.lineTo(x1,y);g.stroke()}
       g.globalCompositeOperation='source-atop';g.fillStyle='#000';g.globalAlpha=.35;g.fillRect(0,Wd*.2,L,Wd*.6);
       return c};
-    const size=()=>{const r=stage.getBoundingClientRect();dpr=Math.min(devicePixelRatio||1,2);
+    let stageRect=null;const syncRect=()=>{stageRect=stage.getBoundingClientRect()};
+    syncRect();new ResizeObserver(syncRect).observe(stage);
+    const size=()=>{const r=stageRect||stage.getBoundingClientRect();dpr=Math.min(devicePixelRatio||1,1.5);
       const nW=Math.round(r.width*dpr),nH=Math.round(r.height*dpr);if(!nW||!nH||(nW===W&&nH===H))return;
       let old=null;if(W){old=document.createElement('canvas');old.width=W;old.height=H;old.getContext('2d').drawImage(mk,0,0)}
       W=cv.width=mk.width=nW;H=cv.height=mk.height=nH;if(old)mx.drawImage(old,0,0,W,H);
-      B=Math.max(60,W*.2);stamp=makeStamp();dirty=true};
+      B=Math.max(60,W*.2);stamp=makeStamp();dirty=true;rebuildBmp()};
     const dab=(x,y,ang,s=1,a=1)=>{mx.save();mx.globalCompositeOperation=done?'destination-out':'source-over';if(done)a*=.5;mx.translate(x,y);mx.rotate(ang);mx.globalAlpha=a;const L=stamp.width*s,Wd=stamp.height*s;mx.drawImage(stamp,-L/2,-Wd/2,L,Wd);mx.restore();dirty=true};
     const seg=(x0,y0,x1,y1,s=1)=>{const dx=x1-x0,dy=y1-y0,d=Math.hypot(dx,dy);if(d<.5)return;const ang=Math.atan2(dy,dx);const st=Math.max(2,B*.06*s);
       for(let t=0;t<=d;t+=st){const k=t/d;dab(x0+dx*k,y0+dy*k,ang,s*(.85+Math.random()*.25),.55+Math.random()*.4)}};
-    const render=()=>{if(dirty&&P.ok&&W&&H){ctx.globalCompositeOperation='source-over';ctx.clearRect(0,0,W,H);ctx.drawImage(pieceImg,0,0,W,H);ctx.globalCompositeOperation='destination-in';ctx.drawImage(mk,0,0);dirty=false}};
+    let pieceBmp=null;const rebuildBmp=async()=>{if(!pieceImg.naturalWidth||!W||!H)return pieceBmp;
+      try{if(pieceBmp&&pieceBmp.close)pieceBmp.close();pieceBmp=await createImageBitmap(pieceImg,{resizeWidth:W,resizeHeight:H,resizeQuality:'high'})}catch(e){pieceBmp=pieceImg}return pieceBmp};
+    const render=()=>{if(dirty&&P.ok&&W&&H){const src=pieceBmp||pieceImg;ctx.globalCompositeOperation='source-over';ctx.clearRect(0,0,W,H);ctx.drawImage(src,0,0,W,H);ctx.globalCompositeOperation='destination-in';ctx.drawImage(mk,0,0);dirty=false}};
     P.render=render;
     const strokes=[[[.0,.3],[.5,.27],[1,.29]],[[1,.39],[.5,.41],[0,.4]],[[0,.5],[.5,.52],[1,.49]],[[1,.6],[.5,.62],[0,.61]],[[0,.7],[.5,.72],[1,.7]],[[.04,.66],[.06,.8],[.07,.97]],[[.3,.72],[.31,.86]],[[.77,.7],[.76,.82],[.77,.98]],[[.96,.66],[.95,.8],[.94,.95]]];
     // remplissage final : aucune zone ne reste au crayon au repos
@@ -70,18 +74,30 @@
       render();if(age>1900){fill();render();healing=false;return}requestAnimationFrame(heal)};
     const wake=()=>{healT=performance.now();if(!healing){healing=true;requestAnimationFrame(heal)}};
     const auto=()=>{let si=0,t0=performance.now();const dur=[520,460,460,460,460,300,240,300,280];let last=null;
-      const step=now=>{if(si>=strokes.length){let f0=now;const flood=t=>{const k=clamp((t-f0)/650);mx.save();mx.globalCompositeOperation='source-over';mx.globalAlpha=.05+k*.25;mx.fillStyle='#000';mx.fillRect(0,0,W,H);mx.restore();dirty=true;render();if(k<1)requestAnimationFrame(flood);else{fill();render();done=true;document.body.classList.add('auto-done')}};requestAnimationFrame(flood);return}
+      const step=now=>{paintRaf=0;if(!paintVisible||document.hidden){paintRaf=requestAnimationFrame(step);return}
+        if(si>=strokes.length){let f0=now;const flood=t=>{paintRaf=0;if(!paintVisible||document.hidden){paintRaf=requestAnimationFrame(flood);return}
+          const k=clamp((t-f0)/650);mx.save();mx.globalCompositeOperation='source-over';mx.globalAlpha=.05+k*.25;mx.fillStyle='#000';mx.fillRect(0,0,W,H);mx.restore();dirty=true;render();if(k<1)paintRaf=requestAnimationFrame(flood);else{fill();render();done=true;document.body.classList.add('auto-done')};return}
+        paintRaf=requestAnimationFrame(flood);return}
         const s=strokes[si],k=clamp((now-t0)/dur[si]);const e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
         const segs=s.length-1,pos=e*segs,i=Math.min(segs-1,Math.floor(pos)),f=pos-i;
         const x=(s[i][0]+(s[i+1][0]-s[i][0])*f)*W,y=(s[i][1]+(s[i+1][1]-s[i][1])*f)*H;
         if(last)seg(last[0],last[1],x,y,si>4?.55:1);last=[x,y];
         if(k>=1){si++;t0=now;last=null}
-        render();requestAnimationFrame(step)};requestAnimationFrame(step)};
-    const start=()=>{size();P.ok=true;readyCbs.push(()=>setTimeout(auto,350));if(document.body.classList.contains('ready'))setTimeout(auto,350)};
-    if(pieceImg.complete&&pieceImg.naturalWidth)start();else pieceImg.addEventListener('load',start);
-    addEventListener('resize',()=>{if(P.ok){size();if(done&&!healing)fill();render()}});
+        render();paintRaf=requestAnimationFrame(step)};paintRaf=requestAnimationFrame(step)};
+    let paintActive=false,paintVisible=true,paintRaf=0;document.addEventListener('visibilitychange',()=>{if(document.hidden&&paintRaf){cancelAnimationFrame(paintRaf);paintRaf=0}});
+    const startPaint=async()=>{if(paintActive)return;paintActive=true;size();await rebuildBmp();P.ok=true;
+      const runAuto=()=>{readyCbs.push(()=>setTimeout(auto,350));if(document.body.classList.contains('ready'))setTimeout(auto,350)};
+      const idle=cb=>{if(typeof requestIdleCallback==='function')requestIdleCallback(cb,{timeout:2200});else setTimeout(cb,1200)};
+      idle(runAuto)};
+    const bootPaint=()=>{if(reduce||!stage)return;let booted=false;
+      const vio=new IntersectionObserver(es=>{paintVisible=es[0].isIntersecting;if(!paintVisible&&paintRaf){cancelAnimationFrame(paintRaf);paintRaf=0}},{threshold:0});
+      vio.observe(stage);
+      const io=new IntersectionObserver(es=>{if(!booted&&es[0].isIntersecting){booted=true;io.disconnect();startPaint()}},{rootMargin:'0px',threshold:.05});io.observe(stage);
+      if(pieceImg.complete&&pieceImg.naturalWidth)rebuildBmp();else pieceImg.addEventListener('load',()=>rebuildBmp(),{once:true})};
+    bootPaint();
+    addEventListener('resize',()=>{if(P.ok){size();if(done&&!healing)fill();render()}},{passive:true});
     // geste de l'utilisateur
-    let lp=null;const pt=e=>{const r=cv.getBoundingClientRect();return[(e.clientX-r.left)*dpr,(e.clientY-r.top)*dpr]};
+    let lp=null;const pt=e=>{const r=stageRect||cv.getBoundingClientRect();return[(e.clientX-r.left)*dpr,(e.clientY-r.top)*dpr]};
     stage.addEventListener('pointermove',e=>{if(!P.ok)return;if(e.pointerType!=='mouse'&&!e.buttons&&e.pressure===0)return;const p=pt(e);if(lp)seg(lp[0],lp[1],p[0],p[1],.75);lp=p;
       if(done)wake();if(++painted>60)document.body.classList.add('painted');render()});
     stage.addEventListener('pointerleave',()=>lp=null);

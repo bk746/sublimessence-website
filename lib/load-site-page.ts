@@ -1,8 +1,12 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import { unstable_noStore as noStore } from "next/cache";
 import type { Metadata } from "next";
+import {
+  SITE_URL,
+  canonicalPathFromMeta,
+  isPreviewDeployment,
+} from "@/lib/site-url";
 
 const CONTENT_DIR = path.join(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -20,8 +24,8 @@ const HTML_FILES = {
 
 export type SitePageKey = keyof typeof HTML_FILES;
 
-function transformHtml(html: string): string {
-  return html
+function transformHtml(html: string, key: SitePageKey): string {
+  let out = html
     .replace(/\bsrc="img\//g, 'src="/img/')
     .replace(/\bsrcset="img\//g, 'srcset="/img/')
     .replace(/\bhref="index\.html/g, 'href="/')
@@ -29,7 +33,39 @@ function transformHtml(html: string): string {
     .replace(/\bhref="realisations\.html/g, 'href="/realisations')
     .replace(/\bhref="atelier\.html/g, 'href="/atelier')
     .replace(/\bhref="contact\.html/g, 'href="/contact')
-    .replace(/<script\s+src="site\.js"\s*><\/script>\s*/gi, "");
+    .replace(/<script\s+src="site\.js"\s*><\/script>\s*/gi, "")
+    .replace(
+      /aria-label="Atelier Sublimessence, accueil"/g,
+      'aria-label="Sublimessence – Atelier · Peintre sur mobilier · Annecy, accueil"',
+    )
+    .replace(/<div class="rvs-grid" role="list">/g, '<div class="rvs-grid">')
+    .replace(/<h4>/g, '<h2 class="ft-h">')
+    .replace(/<\/h4>/g, "</h2>");
+
+  if (key === "prestations") {
+    out = out.replace(
+      /<section class="prx prx-page" id="prestations" aria-label="Les trois prestations">\s*<div class="prx-stack">/,
+      '<section class="prx prx-page" id="prestations" aria-label="Les trois prestations"><h2 class="sr">Les trois prestations</h2><div class="prx-stack">',
+    );
+  }
+
+  if (key === "index") {
+    out = out
+      .replace(
+        /<div class="h4-orn" aria-hidden="true"><\/div><div class="h4-lin" aria-hidden="true"><\/div>/,
+        '<div class="h4-orn" aria-hidden="true"></div>',
+      )
+      .replace(
+        /src="\/img\/hero-piece\.webp"/,
+        'src="/img/hero-piece-1280.webp" srcset="/img/hero-piece-640.webp 640w, /img/hero-piece-960.webp 960w, /img/hero-piece-1280.webp 1280w, /img/hero-piece.webp 1800w" sizes="(max-width: 980px) 92vw, 55vw" fetchpriority="high" loading="eager"',
+      )
+      .replace(
+        /src="\/img\/hero-dessin\.webp"/,
+        'src="/img/hero-dessin-1280.webp" srcset="/img/hero-dessin-640.webp 640w, /img/hero-dessin-960.webp 960w, /img/hero-dessin-1280.webp 1280w, /img/hero-dessin.webp 1800w" sizes="(max-width: 980px) 92vw, 55vw" loading="eager"',
+      );
+  }
+
+  return out;
 }
 
 function extractTag(html: string, re: RegExp): string | undefined {
@@ -39,27 +75,25 @@ function extractTag(html: string, re: RegExp): string | undefined {
 
 function resolveHtmlPath(key: SitePageKey): string {
   const name = HTML_FILES[key];
-  const candidates = [
-    path.join(CONTENT_DIR, name),
-    path.join(process.cwd(), "content", name),
-    path.join(process.cwd(), name),
-  ];
-  for (const filePath of candidates) {
-    if (fs.existsSync(filePath)) return filePath;
+  const filePath = path.join(CONTENT_DIR, name);
+  if (!fs.existsSync(/* turbopackIgnore: true */ filePath)) {
+    throw new Error(
+      `Fichier HTML introuvable pour « ${key} » (${name}) dans ${CONTENT_DIR}`,
+    );
   }
-  throw new Error(
-    `Fichier HTML introuvable pour « ${key} » (${name}). Chemins testés : ${candidates.join(", ")}`,
-  );
+  return filePath;
 }
 
 export function loadSitePage(key: SitePageKey) {
-  noStore();
-  const raw = fs.readFileSync(resolveHtmlPath(key), "utf8");
+  const raw = fs.readFileSync(
+    /* turbopackIgnore: true */ resolveHtmlPath(key),
+    "utf8",
+  );
 
   const bodyClass =
     extractTag(raw, /<body[^>]*\bclass="([^"]*)"/i) ?? "pg-index";
   const bodyMatch = raw.match(/<body[^>]*>([\s\S]*)<\/body>/i);
-  const bodyHtml = bodyMatch ? transformHtml(bodyMatch[1]) : "";
+  const bodyHtml = bodyMatch ? transformHtml(bodyMatch[1], key) : "";
 
   const title =
     extractTag(raw, /<title>([\s\S]*?)<\/title>/i) ??
@@ -98,18 +132,15 @@ export function siteMetadataFromLoaded(meta: {
   canonical?: string;
   ogImage?: string;
 }): Metadata {
-  const canonicalPath = meta.canonical
-    ?.replace("https://atelier-sublimessence.com", "")
-    .replace(/\.html$/, "")
-    .replace(/\/index$/, "/");
+  const canonicalPath = canonicalPathFromMeta(meta.canonical);
+  const preview = isPreviewDeployment();
 
   return {
     title: meta.title,
     description: meta.description,
-    metadataBase: new URL("https://atelier-sublimessence.com"),
-    alternates: canonicalPath
-      ? { canonical: canonicalPath || "/" }
-      : undefined,
+    metadataBase: new URL(SITE_URL),
+    robots: preview ? { index: false, follow: false } : { index: true, follow: true },
+    alternates: { canonical: canonicalPath || "/" },
     openGraph: {
       title: meta.title,
       description: meta.description,
