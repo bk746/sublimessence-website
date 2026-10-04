@@ -36,7 +36,7 @@ async function minifyCss() {
   const min = css
     .replace(/\/\*[\s\S]*?\*\//g, "")
     .replace(/\s+/g, " ")
-    .replace(/\s*([{}:;,>+~])\s*/g, "$1")
+    .replace(/\s*([{}:;,>~])\s*/g, "$1")
     .trim();
   fs.writeFileSync(cssPath, min);
   return crypto.createHash("sha256").update(min).digest("hex").slice(0, 12);
